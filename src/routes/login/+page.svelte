@@ -6,7 +6,6 @@
   let password = "";
 
   let login = true;
-
   const toggle_login = () => {
     login = !login;
     (username = ""), (password = "");
@@ -41,9 +40,11 @@
         "Content-Type": "application/json",
       },
     });
-    if (res.ok) console.log("successfully created user");
-    else console.log("failed to create user");
-    toggle_login();
+    let token = await res.json();
+    if (Object.keys(token).length === 0) {
+      console.log("successfully created user");
+      toggle_login();
+    } else console.log("failed to create user");
   };
   const signout = () => {
     ls.clear();
