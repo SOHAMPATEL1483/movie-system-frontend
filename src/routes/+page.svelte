@@ -2,12 +2,12 @@
   import Moviecard from "../lib/moviecard.svelte";
 </script>
 
-<section class="dark:bg-gray-800 dark:text-gray-100 pt-10">
+<section class="dark:bg-gray-800 dark:text-gray-100 pt-10 font-poppins">
   <div
     class="container flex flex-col justify-center p-10 align-middle mx-auto sm:py-12 lg:py-24 lg:flex-row lg:justify-between">
     <div
-      class="flex flex-col justify-center p-6 text-center rounded-sm lg:max-w-md xl:max-w-lg lg:text-left">
-      <p class="text-2xl font-bold font-['Open_Sans'] leading-none sm:text-6xl">
+      class="flex flex-col justify-center p-6 text-center tracking-wide rounded-sm lg:max-w-md xl:max-w-lg lg:text-left">
+      <p class="text-2xl font-extrabold leading-none sm:text-6xl">
         Find Your<br />
         <span class="dark:text-violet-400"> Next </span> Movie Obsession
         <span class="dark:text-violet-400" />
@@ -22,7 +22,7 @@
         <a
           rel="noopener noreferrer"
           href="/home"
-          class="px-8 py-3 text-lg font-semibold rounded dark:bg-blue-600"
+          class="px-8 py-3 text-lg font-semibold rounded dark:bg-purple-700"
           >Get Started</a>
       </div>
     </div>

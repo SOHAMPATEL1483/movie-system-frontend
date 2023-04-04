@@ -10,6 +10,22 @@
     login = !login;
     (username = ""), (password = "");
   };
+
+  const setuserinfo = async () => {
+    let jwt = ls.get("jwt");
+    let res = await fetch("http://localhost:8000/user/info/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+    });
+    let data = await res.json();
+    ls.set("id", data.id, { ttl: 43200 });
+    ls.set("username", data.username, { ttl: 43200 });
+    location.reload();
+  };
+
   const signin = async () => {
     let res = await fetch("http://localhost:8000/api/token/", {
       method: "POST",
@@ -22,8 +38,9 @@
     if (res.ok) {
       console.log(token);
       ls.set("jwt", token.access, { ttl: 43200 });
+      await setuserinfo();
       // @ts-ignore
-      window.location = "/";
+      //   window.location = "/";
     } else {
       console.log(token.detail);
       if (token.username) console.log("username: " + token.username[0]);
@@ -32,6 +49,7 @@
     }
     (username = ""), (password = "");
   };
+
   const signup = async () => {
     let res = await fetch("http://localhost:8000/user/create/", {
       method: "POST",
@@ -45,9 +63,6 @@
       console.log("successfully created user");
       toggle_login();
     } else console.log("failed to create user");
-  };
-  const signout = () => {
-    ls.clear();
   };
 </script>
 
@@ -74,7 +89,7 @@
 </div> -->
 {#if login}
   <!-- signin -->
-  <div class="grid h-screen place-items-center bg-gray-900">
+  <div class="grid h-screen place-items-center">
     <div class="w-96">
       <Card>
         <form class="flex flex-col space-y-6" action="/">
@@ -104,7 +119,7 @@
           <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
             Not registered? <span
               on:click={toggle_login}
-              class="text-blue-700 hover:underline dark:text-blue-500"
+              class="text-blue-700 cursor-pointer hover:underline dark:text-blue-500"
               >Create account</span>
           </div>
         </form>

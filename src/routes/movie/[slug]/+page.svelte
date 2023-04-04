@@ -1,6 +1,8 @@
 <script>
   import Crewcard from "$lib/crewcard.svelte";
   import { onMount } from "svelte";
+  // @ts-ignore
+  import StarRatting from "@ernane/svelte-star-rating";
   export let data;
   let movieinfo = {
     backdrop: "https://image.tmdb.org/t/p/original",
@@ -47,6 +49,22 @@
   onMount(async () => {
     Promise.all([loadcast(), loadmovie()]);
   });
+  let config = {
+    readOnly: false,
+    countStars: 10,
+    range: { min: 0, max: 10, step: 1 },
+    score: 0,
+    showScore: true,
+    starConfig: {
+      size: 30,
+      fillColor: "#F9ED4F",
+      strokeColor: "#BB8511",
+      unfilledColor: "#71717a",
+      strokeUnfilledColor: "#00000",
+    },
+  };
+
+  const changeSliderInput = () => console.table(config);
 </script>
 
 <div class="relative">
@@ -54,7 +72,7 @@
   <!-- bg-[url('https://image.tmdb.org/t/p/w500/pbEkjhdfP7yuDcMB78YEZwgD4IN.jpg')] -->
   <div
     class=" w-full h-[38rem] bg-no-repeat bg-cover"
-    style="background-position-y: 50%; background-image: linear-gradient(rgba(30, 41, 59, 0.6),rgba(30, 41, 59, 0.7)), url({movieinfo.backdrop})" />
+    style="background-position-y: 50%; background-image: linear-gradient(rgba(30, 41, 59, 0.7),rgba(30, 41, 59, 0.7)), url({movieinfo.backdrop})" />
   <!-- content -->
   <div class="absolute top-0 flex py-10 px-28 h-[38rem]">
     <div class="flex-shrink-0 self-center">
@@ -65,6 +83,9 @@
         {movieinfo.title} <span class="text-slate-300">({movieinfo.year})</span>
       </p>
       <p class="italic text-slate-300">{movieinfo.tagline}</p>
+      <div class="star-rating my-6 flex">
+        <StarRatting bind:config on:change={changeSliderInput} />
+      </div>
       <p class="my-3 text-xl font-semibold">Overview</p>
       <p class="">{movieinfo.overview}</p>
     </div>
