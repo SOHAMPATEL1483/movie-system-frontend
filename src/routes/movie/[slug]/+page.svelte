@@ -1,9 +1,14 @@
 <script>
+  // @ts-nocheck
+
   import Crewcard from "$lib/crewcard.svelte";
   import { onMount } from "svelte";
-  // @ts-ignore
   import StarRatting from "@ernane/svelte-star-rating";
+  import { djangoapi } from "../../../app/stores.js";
+  import ls from "localstorage-slim";
+
   export let data;
+
   let movieinfo = {
     backdrop: "https://image.tmdb.org/t/p/original",
     poster: "https://image.tmdb.org/t/p/w300",
@@ -12,43 +17,8 @@
     tagline: "",
     overview: "",
   };
-  // @ts-ignore
-  /**
-   * @type {any[]}
-   */
   let cast = [];
-  // @ts-ignore
   let director = { name: "", profile_path: "" };
-  const loadmovie = async () => {
-    let res = await fetch(
-      `https://api.themoviedb.org/3/movie/${data.slug}?api_key=843811a4e70cd56397b52a070f1ddf61`
-    );
-    let info = await res.json();
-    if (info) {
-      movieinfo.poster += info["poster_path"];
-      movieinfo.backdrop += info["backdrop_path"];
-      movieinfo.title = info["original_title"];
-      movieinfo.overview = info["overview"];
-      movieinfo.tagline = info["tagline"];
-      movieinfo.year = info["release_date"].slice(0, 4);
-    }
-  };
-  const loadcast = async () => {
-    let res = await fetch(
-      `https://api.themoviedb.org/3/movie/${data.slug}/credits?api_key=843811a4e70cd56397b52a070f1ddf61`
-    );
-    let info = await res.json();
-    for (let i = 0; i < info["crew"].length; i++) {
-      if (info["crew"][i]["job"] === "Director") {
-        director = info["crew"][i];
-      }
-    }
-    cast = info["cast"].slice(0, 5);
-  };
-
-  onMount(async () => {
-    Promise.all([loadcast(), loadmovie()]);
-  });
   let config = {
     readOnly: false,
     countStars: 10,
@@ -64,7 +34,65 @@
     },
   };
 
-  const changeSliderInput = () => console.table(config);
+  const loadmovie = async () => {
+    let res = await fetch(
+      `https://api.themoviedb.org/3/movie/${data.slug}?api_key=843811a4e70cd56397b52a070f1ddf61`
+    );
+    let info = await res.json();
+    if (info) {
+      movieinfo.poster += info["poster_path"];
+      movieinfo.backdrop += info["backdrop_path"];
+      movieinfo.title = info["original_title"];
+      movieinfo.overview = info["overview"];
+      movieinfo.tagline = info["tagline"];
+      movieinfo.year = info["release_date"].slice(0, 4);
+    }
+  };
+
+  const loadcast = async () => {
+    let res = await fetch(
+      `https://api.themoviedb.org/3/movie/${data.slug}/credits?api_key=843811a4e70cd56397b52a070f1ddf61`
+    );
+    let info = await res.json();
+    for (let i = 0; i < info["crew"].length; i++) {
+      if (info["crew"][i]["job"] === "Director") {
+        director = info["crew"][i];
+      }
+    }
+    cast = info["cast"].slice(0, 5);
+  };
+
+  const loadrating = async () => {
+    let headers = {};
+    if (ls.get("jwt") != null)
+      headers = { Authorization: `Bearer ${ls.get("jwt")}` };
+    let res = await fetch(`${$djangoapi}/user/getmovie/?movieId=${data.slug}`, {
+      headers,
+    });
+    let ratings = await res.json();
+    if (ratings.Rating != null) {
+      config.score = ratings.Rating;
+      config.readOnly = true;
+    }
+  };
+
+  onMount(async () => {
+    Promise.all([loadcast(), loadmovie(), loadrating()]);
+  });
+
+  const changeSliderInput = async () => {
+    let headers = {};
+    if (ls.get("jwt") != null)
+      headers = { Authorization: `Bearer ${ls.get("jwt")}` };
+    let res = await fetch(
+      `${$djangoapi}/user/training/?movieId=${data.slug}&rating=${config.score}`,
+      {
+        headers,
+      }
+    );
+    console.log(res.status);
+    config.readOnly = true;
+  };
 </script>
 
 <div class="relative">
@@ -78,13 +106,18 @@
     <div class="flex-shrink-0 self-center">
       <img src={movieinfo.poster} alt="" class="rounded-xl" />
     </div>
-    <div class="text-white p-10 self-center font-poppins">
+    <div class="text-white p-10 self-center font-poppins flex-shrink">
       <p class="text-4xl my-5 font-extrabold">
-        {movieinfo.title} <span class="text-slate-300">({movieinfo.year})</span>
+        {movieinfo.title}
+        <span class="text-slate-300">({movieinfo.year})</span>
       </p>
       <p class="italic text-slate-300">{movieinfo.tagline}</p>
       <div class="star-rating my-6 flex">
-        <StarRatting bind:config on:change={changeSliderInput} />
+        {#if ls.get("jwt")}
+          <StarRatting bind:config on:change={changeSliderInput} />
+        {:else}
+          <p class="text-red-200">Please Login to rate this movie</p>
+        {/if}
       </div>
       <p class="my-3 text-xl font-semibold">Overview</p>
       <p class="">{movieinfo.overview}</p>
@@ -93,7 +126,7 @@
 </div>
 
 <div
-  class="flex px-5 py-10 divide-x-2 divide-slate-600 justify-center font-poppins">
+  class="flex flex-col md:flex-row px-5 py-10 md:divide-x-2 divide-slate-600 justify-center font-poppins">
   <!-- director -->
   <div class="pr-3">
     <p class="text-slate-300 m-5 text-xl">Director</p>

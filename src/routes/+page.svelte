@@ -1,5 +1,4 @@
 <script>
-  import Moviecard from "../lib/moviecard.svelte";
 </script>
 
 <section class="dark:bg-gray-800 dark:text-gray-100 pt-10 font-poppins">
@@ -22,7 +21,7 @@
         <a
           rel="noopener noreferrer"
           href="/home"
-          class="px-8 py-3 text-lg font-semibold rounded dark:bg-purple-700"
+          class="px-8 py-3 text-lg font-semibold rounded dark:bg-violet-600"
           >Get Started</a>
       </div>
     </div>

@@ -1,4 +1,22 @@
 <script>
+  // @ts-nocheck
+  import ls from "localstorage-slim";
+  import { djangoapi } from "../../app/stores";
+
+  let moviename = "";
+  let search_results = [];
+  const searchmovie = async () => {
+    let headers = {};
+    if (ls.get("jwt") != null)
+      headers = { Authorization: `Bearer ${ls.get("jwt")}` };
+    let res = await fetch(`${$djangoapi}/user/home/?name=${moviename}`, {
+      headers,
+    });
+    let data = await res.json();
+    // console.log(data);
+    search_results = data;
+    moviename = "";
+  };
 </script>
 
 <form class="max-w-2xl mx-auto my-20 font-poppins">
@@ -24,53 +42,33 @@
     </div>
     <input
       type="search"
+      bind:value={moviename}
       id="default-search"
-      class="block w-full p-4 pl-10 text-sm border  rounded-lg   bg-gray-700 border-gray-600 dark:placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+      class="block w-full p-4 pl-10 text-sm border rounded-lg bg-gray-700 border-gray-600 dark:placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
       placeholder="Search Movies..."
       required />
     <button
-      type="submit"
-      class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      on:click={searchmovie}
+      class="text-white absolute right-2.5 bottom-2.5 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 bg-violet-600 hover:bg-violet-700 focus:ring-violet-800"
       >Search</button>
   </div>
 </form>
 
-<a
-  href="/"
-  class="flex mx-auto my-5 font-poppins items-center bg-white border rounded-lg shadow  max-w-2xl hover:bg-gray-100 border-gray-700 dark:bg-gray-700">
-  <img
-    class="object-cover rounded-l-lg h-32"
-    src="https://image.tmdb.org/t/p/w200/dR1Ju50iudrOh3YgfwkAU1g2HZe.jpg"
-    alt="" />
-  <div class="flex flex-col justify-between p-4  ml-4">
-    <h5 class="mb-2 text-xl font-bold tracking-wide text-slate-300 ">
-      Ford vs. Ferrari
-    </h5>
-  </div>
-</a>
-<a
-  href="/"
-  class="flex mx-auto my-5 font-poppins items-center bg-white border rounded-lg shadow  max-w-2xl hover:bg-gray-100 border-gray-700 dark:bg-gray-700">
-  <img
-    class="object-cover rounded-l-lg h-32"
-    src="https://image.tmdb.org/t/p/w200/dR1Ju50iudrOh3YgfwkAU1g2HZe.jpg"
-    alt="" />
-  <div class="flex flex-col justify-between p-4  ml-4">
-    <h5 class="mb-2 text-xl font-bold tracking-wide text-slate-300 ">
-      Ford vs. Ferrari
-    </h5>
-  </div>
-</a>
-<a
-  href="/"
-  class="flex mx-auto my-5 font-poppins items-center bg-white border rounded-lg shadow  max-w-2xl hover:bg-gray-100 border-gray-700 dark:bg-gray-700">
-  <img
-    class="object-cover rounded-l-lg h-32"
-    src="https://image.tmdb.org/t/p/w200/dR1Ju50iudrOh3YgfwkAU1g2HZe.jpg"
-    alt="" />
-  <div class="flex flex-col justify-between p-4  ml-4">
-    <h5 class="mb-2 text-xl font-bold tracking-wide text-slate-300 ">
-      Ford vs. Ferrari
-    </h5>
-  </div>
-</a>
+{#each search_results as movie}
+  <a
+    href={"/movie/" + movie.Imdb_id}
+    target="_blank"
+    class="flex mx-auto my-5 font-poppins items-center bg-white border rounded-lg shadow max-w-2xl hover:bg-gray-100 border-gray-700 dark:bg-gray-700">
+    <img
+      class="object-cover rounded-l-lg h-32"
+      src={"https://image.tmdb.org/t/p/w200" + movie.Poster_path}
+      alt="" />
+    <div class="flex flex-col justify-between p-4 ml-4">
+      <h5 class="mb-2 text-xl font-bold tracking-wide text-slate-300">
+        {movie.Title}
+      </h5>
+    </div>
+  </a>
+{:else}
+  <p class="text-slate-300 font-poppins mx-auto w-fit">No Results</p>
+{/each}

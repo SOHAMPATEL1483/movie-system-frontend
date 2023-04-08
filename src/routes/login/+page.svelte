@@ -1,6 +1,7 @@
 <script>
   import { Card, Button, Label, Input, Checkbox } from "flowbite-svelte";
   import ls from "localstorage-slim";
+  import { djangoapi } from "../../app/stores";
   // 43200
   let username = "";
   let password = "";
@@ -13,7 +14,7 @@
 
   const setuserinfo = async () => {
     let jwt = ls.get("jwt");
-    let res = await fetch("http://localhost:8000/user/info/", {
+    let res = await fetch(`${$djangoapi}/user/info/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -27,7 +28,7 @@
   };
 
   const signin = async () => {
-    let res = await fetch("http://localhost:8000/api/token/", {
+    let res = await fetch(`${$djangoapi}/api/token/`, {
       method: "POST",
       body: JSON.stringify({ username: username, password: password }),
       headers: {
@@ -51,7 +52,7 @@
   };
 
   const signup = async () => {
-    let res = await fetch("http://localhost:8000/user/create/", {
+    let res = await fetch(`${$djangoapi}/user/create/`, {
       method: "POST",
       body: JSON.stringify({ username: username, password: password }),
       headers: {
@@ -89,8 +90,8 @@
 </div> -->
 {#if login}
   <!-- signin -->
-  <div class="grid h-screen place-items-center">
-    <div class="w-96">
+  <div class="h-full font-poppins">
+    <div class="w-96 mx-auto mt-36">
       <Card>
         <form class="flex flex-col space-y-6" action="/">
           <h3 class="text-xl font-medium text-gray-900 dark:text-white p-0">
@@ -114,12 +115,12 @@
               placeholder="•••••"
               required />
           </Label>
-          <Button on:click={signin} class="w-full"
+          <Button on:click={signin} class="w-full bg-violet-500"
             >Login to your account</Button>
           <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
             Not registered? <span
               on:click={toggle_login}
-              class="text-blue-700 cursor-pointer hover:underline dark:text-blue-500"
+              class="text-blue-500 cursor-pointer hover:underline"
               >Create account</span>
           </div>
         </form>
@@ -127,8 +128,8 @@
     </div>
   </div>
 {:else}
-  <div class="grid  h-screen place-items-center bg-gray-900">
-    <div class="w-96">
+  <div class="h-full font-poppins">
+    <div class="w-96 mx-auto mt-36">
       <Card>
         <form class="flex flex-col space-y-6" action="/">
           <h3 class="text-xl font-medium text-gray-900 dark:text-white p-0">
@@ -158,7 +159,7 @@
             Already have an account?
             <span
               on:click={toggle_login}
-              class="text-blue-700 hover:underline dark:text-blue-500">
+              class="cursor-pointer text-blue-700 hover:underline dark:text-blue-500">
               Sign in</span>
           </div>
         </form>

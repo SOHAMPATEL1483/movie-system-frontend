@@ -1,94 +1,68 @@
 <script>
+  // @ts-nocheck
   import Moviecard from "$lib/moviecard.svelte";
+  import ls from "localstorage-slim";
+  import { onMount } from "svelte";
+  import { djangoapi } from "../../app/stores";
+
+  let currpage = 0;
+  let totalmovie = Array();
+  let currmovie = [];
+  const loadmovie = async () => {
+    let headers = {};
+    if (ls.get("jwt") != null)
+      headers = { Authorization: `Bearer ${ls.get("jwt")}` };
+    let res = await fetch(`${$djangoapi}/user/home/`, { headers });
+    let data = await res.json();
+    totalmovie = data;
+    console.log(typeof totalmovie[0]);
+  };
+  $: currmovie = totalmovie.slice(currpage * 10, currpage * 10 + 10);
+
+  onMount(loadmovie);
 </script>
 
 <div class="flex flex-wrap px-10 justify-evenly">
-  <Moviecard
-    name="Jumanji"
-    link="http://image.tmdb.org/t/p/w200/vgpXmVaVyUL7GGiDeiK1mKEKzcX.jpg" />
-  <Moviecard
-    name="Jumanji"
-    link="http://image.tmdb.org/t/p/w200/vgpXmVaVyUL7GGiDeiK1mKEKzcX.jpg" />
-  <Moviecard
-    name="Jumanji"
-    link="http://image.tmdb.org/t/p/w200/vgpXmVaVyUL7GGiDeiK1mKEKzcX.jpg" />
-  <Moviecard
-    name="Jumanji"
-    link="http://image.tmdb.org/t/p/w200/vgpXmVaVyUL7GGiDeiK1mKEKzcX.jpg" />
-  <Moviecard
-    name="Jumanji"
-    link="http://image.tmdb.org/t/p/w200/vgpXmVaVyUL7GGiDeiK1mKEKzcX.jpg" />
-  <Moviecard
-    name="Jumanji"
-    link="http://image.tmdb.org/t/p/w200/vgpXmVaVyUL7GGiDeiK1mKEKzcX.jpg" />
-  <Moviecard
-    name="Jumanji"
-    link="http://image.tmdb.org/t/p/w200/vgpXmVaVyUL7GGiDeiK1mKEKzcX.jpg" />
-  <Moviecard
-    name="Jumanji"
-    link="http://image.tmdb.org/t/p/w200/vgpXmVaVyUL7GGiDeiK1mKEKzcX.jpg" />
-  <Moviecard
-    name="Jumanji"
-    link="http://image.tmdb.org/t/p/w200/vgpXmVaVyUL7GGiDeiK1mKEKzcX.jpg" />
-  <Moviecard
-    name="Jumanji"
-    link="http://image.tmdb.org/t/p/w200/vgpXmVaVyUL7GGiDeiK1mKEKzcX.jpg" />
+  {#each currmovie as movie}
+    <Moviecard
+      poster={movie.Poster_path}
+      imdb_id={movie.Imdb_id}
+      name={movie.Title} />
+  {/each}
 </div>
 
 <nav aria-label="Page navigation example" class="flex justify-center p-5">
   <ul class="inline-flex items-center -space-x-px">
     <li>
-      <a
-        href="/"
-        class="block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-        <span class="sr-only">Previous</span>
-        <svg
-          aria-hidden="true"
-          class="w-5 h-5"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-          ><path
-            fill-rule="evenodd"
-            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-            clip-rule="evenodd" /></svg>
-      </a>
+      <button
+        on:click={() => {
+          currpage = 0;
+        }}
+        class="px-3 py-2 leading-tight rounded-l-xl border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white btn"
+        class:active={currpage === 0}>1</button>
     </li>
     <li>
-      <a
-        href="/"
-        class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-        >1</a>
+      <button
+        on:click={() => {
+          currpage = 1;
+        }}
+        class="px-3 py-2 leading-tight border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white btn"
+        class:active={currpage === 1}>2</button>
     </li>
     <li>
-      <a
-        href="/"
-        class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-        >2</a>
-    </li>
-    <li>
-      <a
-        href="/"
-        aria-current="page"
-        class="z-10 px-3 py-2 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-        >3</a>
-    </li>
-    <li>
-      <a
-        href="/"
-        class="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-        <span class="sr-only">Next</span>
-        <svg
-          aria-hidden="true"
-          class="w-5 h-5"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-          ><path
-            fill-rule="evenodd"
-            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-            clip-rule="evenodd" /></svg>
-      </a>
+      <button
+        on:click={() => {
+          currpage = 2;
+          console.log(currpage);
+        }}
+        class=" px-3 py-2 leading-tight border rounded-r-xl bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white btn active"
+        class:active={currpage === 2}>3</button>
     </li>
   </ul>
 </nav>
+
+<style>
+  .active {
+    background-color: #374151;
+  }
+</style>
