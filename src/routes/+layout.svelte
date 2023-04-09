@@ -49,7 +49,7 @@
             alt="user photo" />
         </a>
         <button
-          on:click={signout()}
+          on:click={signout}
           type="button"
           class="text-white cursor-pointer focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 text-center mx-3 md:mr-0 bg-purple-600 hover:bg-purple-700 focus:ring-purple-800"
           >Sign Out</button>

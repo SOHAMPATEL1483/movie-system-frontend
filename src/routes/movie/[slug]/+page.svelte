@@ -95,15 +95,10 @@
   };
 </script>
 
-<div class="relative">
-  <!-- image -->
-  <!-- bg-[url('https://image.tmdb.org/t/p/w500/pbEkjhdfP7yuDcMB78YEZwgD4IN.jpg')] -->
-  <div
-    class=" w-full h-[38rem] bg-no-repeat bg-cover"
-    style="background-position-y: 50%; background-image: linear-gradient(rgba(30, 41, 59, 0.7),rgba(30, 41, 59, 0.7)), url({movieinfo.backdrop})" />
+<div class="relative h-auto">
   <!-- content -->
-  <div class="absolute top-0 flex py-10 px-28 h-[38rem]">
-    <div class="flex-shrink-0 self-center">
+  <div class="flex py-10 px-28 h-[38rem] align-middle">
+    <div class="shrink-0 self-center">
       <img src={movieinfo.poster} alt="" class="rounded-xl" />
     </div>
     <div class="text-white p-10 self-center font-poppins flex-shrink">
@@ -123,6 +118,11 @@
       <p class="">{movieinfo.overview}</p>
     </div>
   </div>
+  <!-- image -->
+  <!-- bg-[url('https://image.tmdb.org/t/p/w500/pbEkjhdfP7yuDcMB78YEZwgD4IN.jpg')] -->
+  <div
+    class="absolute top-0 -z-10 w-full h-[38rem] bg-no-repeat bg-cover"
+    style="background-position-y: 50%; background-image: linear-gradient(rgba(30, 41, 59, 0.7),rgba(30, 41, 59, 0.7)), url({movieinfo.backdrop})" />
 </div>
 
 <div
@@ -137,7 +137,7 @@
   <!-- crew -->
   <div class="pl-3">
     <p class="text-slate-300 m-5 text-xl">Cast</p>
-    <div class="flex flex-wrap">
+    <div class="flex">
       {#each cast as person}
         <Crewcard
           link={"https://image.tmdb.org/t/p/w300/" + person["profile_path"]}
