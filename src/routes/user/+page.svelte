@@ -35,7 +35,7 @@
     </h1>
   </div>
 
-  <div>
+  <div class="px-5">
     {#each movies as movie}
       <a
         href={"/movie/" + movie.Imdb_id}

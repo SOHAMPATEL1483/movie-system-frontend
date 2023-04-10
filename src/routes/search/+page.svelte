@@ -19,7 +19,7 @@
   };
 </script>
 
-<form class="max-w-2xl mx-auto my-20 font-poppins">
+<form class="max-w-2xl mx-auto my-20 font-poppins px-5">
   <label
     for="default-search"
     class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -55,20 +55,21 @@
 </form>
 
 {#each search_results as movie}
-  <a
-    href={"/movie/" + movie.Imdb_id}
-    target="_blank"
-    class="flex mx-auto my-5 font-poppins items-center bg-white border rounded-lg shadow max-w-2xl hover:bg-gray-100 border-gray-700 dark:bg-gray-700">
-    <img
-      class="object-cover rounded-l-lg h-32"
-      src={"https://image.tmdb.org/t/p/w200" + movie.Poster_path}
-      alt="" />
-    <div class="flex flex-col justify-between p-4 ml-4">
-      <h5 class="mb-2 text-xl font-bold tracking-wide text-slate-300">
-        {movie.Title}
-      </h5>
-    </div>
-  </a>
+  <div class="px-5">
+    <a
+      href={"/movie/" + movie.Imdb_id}
+      class="flex mx-auto my-5 font-poppins items-center bg-white border rounded-lg shadow max-w-2xl hover:bg-gray-100 border-gray-700 dark:bg-gray-700">
+      <img
+        class="object-cover rounded-l-lg h-32"
+        src={"https://image.tmdb.org/t/p/w200" + movie.Poster_path}
+        alt="" />
+      <div class="flex flex-col justify-between p-4 ml-4">
+        <h5 class="mb-2 text-xl font-bold tracking-wide text-slate-300">
+          {movie.Title}
+        </h5>
+      </div>
+    </a>
+  </div>
 {:else}
   <p class="text-slate-300 font-poppins mx-auto w-fit">No Results</p>
 {/each}
