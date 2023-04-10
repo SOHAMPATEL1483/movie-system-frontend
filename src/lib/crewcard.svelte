@@ -3,7 +3,7 @@
   export let name = "";
 </script>
 
-<div class="w-fit mx-5 border rounded-md shadow bg-gray-700 border-gray-800">
+<div class="w-fit m-5 border rounded-md shadow bg-gray-700 border-gray-800">
   <div class="">
     <img class="rounded-t-md h-72 w-48" src={link} alt="" />
   </div>

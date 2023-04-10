@@ -78,6 +78,9 @@
 
   onMount(async () => {
     Promise.all([loadcast(), loadmovie(), loadrating()]);
+    if (window.screen.width <= 768) {
+      config.starConfig.size = 20;
+    }
   });
 
   const changeSliderInput = async () => {
@@ -97,11 +100,12 @@
 
 <div class="relative h-auto">
   <!-- content -->
-  <div class="flex py-10 px-28 h-[38rem] align-middle">
-    <div class="shrink-0 self-center">
+  <div
+    class="flex flex-col md:flex-row py-10 px-5 md:h-[38rem] md:px-28 align-middle">
+    <div class="self-center flex-shrink-0">
       <img src={movieinfo.poster} alt="" class="rounded-xl" />
     </div>
-    <div class="text-white p-10 self-center font-poppins flex-shrink">
+    <div class="text-white md:p-10 self-center font-poppins w-auto">
       <p class="text-4xl my-5 font-extrabold">
         {movieinfo.title}
         <span class="text-slate-300">({movieinfo.year})</span>
@@ -109,7 +113,9 @@
       <p class="italic text-slate-300">{movieinfo.tagline}</p>
       <div class="star-rating my-6 flex">
         {#if ls.get("jwt")}
-          <StarRatting bind:config on:change={changeSliderInput} />
+          <div class="">
+            <StarRatting bind:config on:change={changeSliderInput} />
+          </div>
         {:else}
           <p class="text-red-200">Please Login to rate this movie</p>
         {/if}
@@ -121,23 +127,25 @@
   <!-- image -->
   <!-- bg-[url('https://image.tmdb.org/t/p/w500/pbEkjhdfP7yuDcMB78YEZwgD4IN.jpg')] -->
   <div
-    class="absolute top-0 -z-10 w-full h-[38rem] bg-no-repeat bg-cover"
+    class="absolute top-0 -z-10 w-full h-[38rem] bg-no-repeat bg-cover invisible md:visible"
     style="background-position-y: 50%; background-image: linear-gradient(rgba(30, 41, 59, 0.7),rgba(30, 41, 59, 0.7)), url({movieinfo.backdrop})" />
 </div>
 
 <div
-  class="flex flex-col md:flex-row px-5 py-10 md:divide-x-2 divide-slate-600 justify-center font-poppins">
+  class="flex flex-col md:flex-row py-10 md:divide-x-2 divide-slate-600 justify-center font-poppins">
   <!-- director -->
   <div class="pr-3">
     <p class="text-slate-300 m-5 text-xl">Director</p>
-    <Crewcard
-      link={"https://image.tmdb.org/t/p/w300/" + director["profile_path"]}
-      name={director["name"]} />
+    <div class="flex justify-center">
+      <Crewcard
+        link={"https://image.tmdb.org/t/p/w300/" + director["profile_path"]}
+        name={director["name"]} />
+    </div>
   </div>
   <!-- crew -->
   <div class="pl-3">
     <p class="text-slate-300 m-5 text-xl">Cast</p>
-    <div class="flex">
+    <div class="flex flex-wrap justify-center md:justify-start">
       {#each cast as person}
         <Crewcard
           link={"https://image.tmdb.org/t/p/w300/" + person["profile_path"]}

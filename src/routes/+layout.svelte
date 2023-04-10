@@ -19,8 +19,8 @@
         class="h-8 mr-3"
         alt="Flowbite Logo" />
       <span
-        class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
-        >Flowbite</span>
+        class="self-center text-2xl font-semibold font-poppins whitespace-nowrap dark:text-white"
+        >WatchWizard</span>
     </a>
     <div class="flex items-center md:order-2">
       {#if ls.get("jwt") === null}
