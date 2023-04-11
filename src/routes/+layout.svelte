@@ -10,16 +10,13 @@
   };
 </script>
 
-<nav class="bg-white border-gray-200 dark:bg-gray-800 font-inter">
+<nav class="bg-white border-gray-200 dark:bg-gray-800">
   <div
     class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
     <a href="/" class="flex items-center">
-      <img
-        src="https://flowbite.com/docs/images/logo.svg"
-        class="h-8 mr-3"
-        alt="Flowbite Logo" />
+      <!-- <img src="/logo.png" class="h-8 mr-3" alt="" /> -->
       <span
-        class="self-center md:text-2xl font-semibold font-poppins whitespace-nowrap dark:text-white"
+        class="self-center md:text-2xl font-semibold font-Lexend whitespace-nowrap dark:text-white"
         >WatchWizard</span>
     </a>
     <div class="flex items-center md:order-2">
@@ -78,7 +75,7 @@
       class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
       id="mobile-menu-2">
       <ul
-        class="flex flex-col font-poppins p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-gray-800 md:bg-gray-800 border-gray-700">
+        class="flex flex-col font-Lexend p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-gray-800 md:bg-gray-800 border-gray-700">
         <li>
           <a
             href="/home"
