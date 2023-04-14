@@ -16,7 +16,7 @@
     <a href="/" class="flex items-center">
       <!-- <img src="/logo.png" class="h-8 mr-3" alt="" /> -->
       <span
-        class="self-center md:text-2xl font-semibold font-Lexend whitespace-nowrap dark:text-white"
+        class="self-center text-xl md:text-2xl font-semibold font-Lexend whitespace-nowrap dark:text-white"
         >WatchWizard</span>
     </a>
     <div class="flex items-center md:order-2">

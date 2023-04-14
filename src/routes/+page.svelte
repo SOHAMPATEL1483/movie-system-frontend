@@ -6,7 +6,7 @@
     class="container flex flex-col justify-center p-10 align-middle mx-auto sm:py-12 lg:py-24 lg:flex-row lg:justify-between">
     <div
       class="flex flex-col justify-center p-6 text-center tracking-wide rounded-sm lg:max-w-md xl:max-w-lg lg:text-left">
-      <p class="text-2xl font-extrabold leading-none sm:text-6xl">
+      <p class="text-4xl font-extrabold leading-none md:text-6xl">
         Find Your<br />
         <span class="dark:text-violet-400"> Next </span> Movie Obsession
         <span class="dark:text-violet-400" />
