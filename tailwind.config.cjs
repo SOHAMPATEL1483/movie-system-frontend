@@ -1,3 +1,5 @@
+const colors = require("tailwindcss/colors");
+
 const config = {
   content: [
     "./src/**/*.{html,js,svelte,ts}",
@@ -6,6 +8,9 @@ const config = {
 
   theme: {
     extend: {
+      colors: {
+        primary: colors.violet,
+      },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
         Lexend: ["Lexend Deca", "sans-serif"],

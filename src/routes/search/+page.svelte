@@ -2,10 +2,13 @@
   // @ts-nocheck
   import ls from "localstorage-slim";
   import { djangoapi } from "../../app/stores";
+  import { Jumper } from "svelte-loading-spinners";
 
+  let isloading = false;
   let moviename = "";
   let search_results = [];
   const searchmovie = async () => {
+    isloading = true;
     let headers = {};
     if (ls.get("jwt") != null)
       headers = { Authorization: `Bearer ${ls.get("jwt")}` };
@@ -16,6 +19,7 @@
     // console.log(data);
     search_results = data;
     moviename = "";
+    isloading = false;
   };
 </script>
 
@@ -54,22 +58,28 @@
   </div>
 </form>
 
-{#each search_results as movie}
-  <div class="px-5">
-    <a
-      href={"/movie/" + movie.Imdb_id}
-      class="flex mx-auto my-5 font-poppins items-center bg-white border rounded-lg shadow max-w-2xl hover:bg-gray-100 border-gray-700 dark:bg-gray-700">
-      <img
-        class="object-cover rounded-l-lg h-32"
-        src={"https://image.tmdb.org/t/p/w200" + movie.Poster_path}
-        alt="" />
-      <div class="flex flex-col justify-between p-4 ml-4">
-        <h5 class="mb-2 text-xl font-bold tracking-wide text-slate-300">
-          {movie.Title}
-        </h5>
-      </div>
-    </a>
+{#if isloading}
+  <div class="w-fit h-fit m-auto">
+    <Jumper color="#64748b" size="80" />
   </div>
 {:else}
-  <p class="text-slate-300 font-poppins mx-auto w-fit">No Results</p>
-{/each}
+  {#each search_results as movie}
+    <div class="px-5">
+      <a
+        href={"/movie/" + movie.Imdb_id}
+        class="flex mx-auto my-5 font-poppins items-center bg-white border rounded-lg shadow max-w-2xl hover:bg-gray-100 border-gray-700 dark:bg-gray-700">
+        <img
+          class="object-cover rounded-l-lg h-32"
+          src={"https://image.tmdb.org/t/p/w200" + movie.Poster_path}
+          alt="" />
+        <div class="flex flex-col justify-between p-4 ml-4">
+          <h5 class="mb-2 text-xl font-bold tracking-wide text-slate-300">
+            {movie.Title}
+          </h5>
+        </div>
+      </a>
+    </div>
+  {:else}
+    <p class="text-slate-300 font-poppins mx-auto w-fit">No Results</p>
+  {/each}
+{/if}

@@ -1,7 +1,6 @@
 <script>
   // @ts-nocheck
 
-  import { Button } from "flowbite-svelte";
   import "../app.css";
   import ls from "localstorage-slim";
   const signout = () => {
