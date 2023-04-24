@@ -1,9 +1,12 @@
 <script>
   import ls from "localstorage-slim";
   import { djangoapi } from "../../app/stores";
+  import { Circle } from "svelte-loading-spinners";
+  import { invalidateAll } from "$app/navigation";
   // 43200
   let username = "";
   let password = "";
+  let isloading = false;
 
   let login = true;
   const toggle_login = () => {
@@ -23,10 +26,11 @@
     let data = await res.json();
     ls.set("id", data.id, { ttl: 43200 });
     ls.set("username", data.username, { ttl: 43200 });
-    location.reload();
+    invalidateAll();
   };
 
   const signin = async () => {
+    isloading = true;
     let res = await fetch(`${$djangoapi}/api/token/`, {
       method: "POST",
       body: JSON.stringify({ username: username, password: password }),
@@ -46,9 +50,12 @@
       ls.clear();
     }
     (username = ""), (password = "");
+    isloading = false;
+    login = true;
   };
 
   const signup = async () => {
+    isloading = true;
     let res = await fetch(`${$djangoapi}/user/create/`, {
       method: "POST",
       body: JSON.stringify({ username: username, password: password }),
@@ -65,6 +72,8 @@
     } else {
       alert(token.username[0]);
     }
+    isloading = false;
+    (username = ""), (password = "");
   };
 </script>
 
@@ -109,8 +118,14 @@
             </div>
             <button
               on:click={signin}
-              class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              >Sign in</button>
+              class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+              {#if isloading}
+                <div class="flex justify-center">
+                  <Circle color="#f1f5f9" size="30" />
+                </div>
+              {:else}
+                Sign In{/if}
+            </button>
             <p class="text-sm font-light text-gray-500 dark:text-gray-400">
               Don't have an account yet? <button
                 on:click={toggle_login}
@@ -163,8 +178,15 @@
             </div>
             <button
               on:click={signup}
-              class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              >Sign up</button>
+              class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+              {#if isloading}
+                <div class="flex justify-center">
+                  <Circle color="#f1f5f9" size="30" />
+                </div>
+              {:else}
+                Sign up
+              {/if}
+            </button>
             <p class="text-sm font-light text-gray-500 dark:text-gray-400">
               Already have an account? <button
                 on:click={toggle_login}
