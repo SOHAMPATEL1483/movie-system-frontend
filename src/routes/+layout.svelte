@@ -23,7 +23,7 @@
         <a
           href="/login"
           type="button"
-          class="text-white cursor-pointer focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 bg-violet-600 hover:bg-violet-700 focus:ring-violet-800"
+          class="text-white cursor-pointer focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 bg-primary-600 hover:bg-primary-700 focus:ring-primary-800"
           >Login</a>
       {:else}
         <a
@@ -47,7 +47,7 @@
         <button
           on:click={signout}
           type="button"
-          class="text-white cursor-pointer focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 text-center mx-3 md:mr-0 bg-purple-600 hover:bg-purple-700 focus:ring-purple-800"
+          class="text-white cursor-pointer focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 text-center mx-3 md:mr-0 bg-primary-600 hover:bg-primary-700 focus:ring-primary-800"
           >Sign Out</button>
       {/if}
 
@@ -78,19 +78,19 @@
         <li>
           <a
             href="/home"
-            class="block py-2 pl-3 pr-4 text-white md:hover:text-violet-400 rounded md:bg-transparent md:p-0"
+            class="block py-2 pl-3 pr-4 text-white md:hover:text-primary-400 rounded md:bg-transparent md:p-0"
             aria-current="page">Home</a>
         </li>
         <li>
           <a
             href="/search"
-            class="block py-2 pl-3 pr-4 rounded md:hover:text-violet-400 md:p-0 text-white md:dark:hover:text-violet-400 hover:bg-gray-700 dark:hover:text-white md:hover:bg-transparent dark:border-gray-700"
+            class="block py-2 pl-3 pr-4 rounded md:hover:text-primary-400 md:p-0 text-white md:dark:hover:text-primary-400 hover:bg-gray-700 dark:hover:text-white md:hover:bg-transparent dark:border-gray-700"
             >Search</a>
         </li>
         <li>
           <a
             href="/"
-            class="block py-2 pl-3 pr-4 rounded md:hover:text-violet-400 md:p-0 text-white md:dark:hover:text-violet-400 hover:bg-gray-700 dark:hover:text-white md:hover:bg-transparent dark:border-gray-700"
+            class="block py-2 pl-3 pr-4 rounded md:hover:text-primary-400 md:p-0 text-white md:dark:hover:text-primary-400 hover:bg-gray-700 dark:hover:text-white md:hover:bg-transparent dark:border-gray-700"
             >About</a>
         </li>
       </ul>

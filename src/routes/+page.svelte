@@ -8,8 +8,8 @@
       class="flex flex-col justify-center p-6 text-center tracking-wide rounded-sm lg:max-w-md xl:max-w-lg lg:text-left">
       <p class="text-4xl font-extrabold leading-none md:text-6xl">
         Find Your<br />
-        <span class="dark:text-violet-400"> Next </span> Movie Obsession
-        <span class="dark:text-violet-400" />
+        <span class="dark:text-primary-400"> Next </span> Movie Obsession
+        <span class="dark:text-primary-400" />
       </p>
       <p class="mt-6 mb-8 text-lg sm:mb-12">
         Discover your next cinematic adventure with our
@@ -21,7 +21,7 @@
         <a
           rel="noopener noreferrer"
           href="/home"
-          class="px-8 py-3 text-lg font-semibold rounded dark:bg-violet-600"
+          class="px-8 py-3 text-lg font-semibold rounded dark:bg-primary-600"
           >Get Started</a>
       </div>
     </div>

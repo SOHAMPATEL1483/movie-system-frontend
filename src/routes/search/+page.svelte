@@ -48,12 +48,12 @@
       type="search"
       bind:value={moviename}
       id="default-search"
-      class="block w-full p-4 pl-10 text-sm border rounded-lg bg-gray-700 border-gray-600 dark:placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+      class="block w-full p-4 pl-10 text-sm border rounded-lg bg-gray-700 border-gray-600 dark:placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
       placeholder="Search Movies..."
       required />
     <button
       on:click={searchmovie}
-      class="text-white absolute right-2.5 bottom-2.5 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 bg-violet-600 hover:bg-violet-700 focus:ring-violet-800"
+      class="text-white absolute right-2.5 bottom-2.5 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 bg-primary-600 hover:bg-primary-700 focus:ring-primary-800"
       >Search</button>
   </div>
 </form>
