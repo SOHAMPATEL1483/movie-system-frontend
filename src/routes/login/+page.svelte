@@ -3,17 +3,28 @@
   import { djangoapi } from "../../app/stores";
   import { Circle } from "svelte-loading-spinners";
   import { invalidateAll } from "$app/navigation";
+  import { error } from "@sveltejs/kit";
   // 43200
   let username = "";
   let password = "";
   let isloading = false;
+  let errors = { username: "", password: "", all: "" };
 
   let login = true;
   const toggle_login = () => {
     login = !login;
     (username = ""), (password = "");
   };
-
+  const validatedata = (
+    /** @type {string} */ username,
+    /** @type {string} */ password
+  ) => {
+    errors = { username: "", password: "", all: "" };
+    if (username === "") errors.username = "username can't be empty";
+    if (password === "") errors.password = "password can't be empty";
+    if (password.length < 8)
+      errors.password = "password must have 8 characters";
+  };
   const setuserinfo = async () => {
     let jwt = ls.get("jwt");
     let res = await fetch(`${$djangoapi}/user/info/`, {
@@ -31,6 +42,12 @@
 
   const signin = async () => {
     isloading = true;
+    validatedata(username, password);
+    console.log(errors);
+    if (errors.username != "" || errors.password != "" || errors.all != "") {
+      isloading = false;
+      return;
+    }
     let res = await fetch(`${$djangoapi}/api/token/`, {
       method: "POST",
       body: JSON.stringify({ username: username, password: password }),
@@ -46,16 +63,22 @@
       // @ts-ignore
       window.location = "/home";
     } else {
-      alert(token.detail);
+      errors.all = token.detail;
       ls.clear();
     }
     (username = ""), (password = "");
     isloading = false;
     login = true;
+    console.log(errors);
   };
 
   const signup = async () => {
     isloading = true;
+    validatedata(username, password);
+    if (errors.username != "" || errors.password != "" || errors.all != "") {
+      isloading = false;
+      return;
+    }
     let res = await fetch(`${$djangoapi}/user/create/`, {
       method: "POST",
       body: JSON.stringify({ username: username, password: password }),
@@ -70,10 +93,12 @@
       console.log("succeess");
       //   console.log(token);
     } else {
-      alert(token.username[0]);
+      errors.all = token.username[0];
     }
+    await signin();
     isloading = false;
     (username = ""), (password = "");
+    console.log(errors);
   };
 </script>
 
@@ -101,6 +126,11 @@
                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="xyz123"
                 required />
+              {#if errors.username != ""}
+                <p class="mt-1 text-sm font-medium text-red-500">
+                  {errors.username}
+                </p>
+              {/if}
             </div>
             <div>
               <label
@@ -115,7 +145,17 @@
                 placeholder="••••••••"
                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required />
+              {#if errors.password != ""}
+                <p class="mt-1 text-sm font-medium text-red-500">
+                  {errors.password}
+                </p>
+              {/if}
             </div>
+            {#if errors.all != ""}
+              <p class="mt-1 text-sm font-medium text-red-500">
+                {errors.all}
+              </p>
+            {/if}
             <button
               on:click={signin}
               class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
@@ -161,6 +201,11 @@
                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="xyz123"
                 required />
+              {#if errors.username != ""}
+                <p class="mt-1 text-sm font-medium text-red-500">
+                  {errors.username}
+                </p>
+              {/if}
             </div>
             <div>
               <label
@@ -175,7 +220,17 @@
                 placeholder="••••••••"
                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required />
+              {#if errors.password != ""}
+                <p class="mt-1 text-sm font-medium text-red-500">
+                  {errors.password}
+                </p>
+              {/if}
             </div>
+            {#if errors.all != ""}
+              <p class="mt-1 text-sm font-medium text-red-500">
+                {errors.all}
+              </p>
+            {/if}
             <button
               on:click={signup}
               class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
